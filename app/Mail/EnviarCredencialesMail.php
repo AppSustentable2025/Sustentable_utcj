@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 
 class EnviarCredencialesMail extends Mailable
@@ -21,11 +22,7 @@ class EnviarCredencialesMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Tus Credenciales de Acceso')
-                    ->view('emails.credenciales')
-                    ->with([
-                        'matricula' => $this->matricula,
-                        'password' => $this->password,
-                    ]);
+        return $this->subject('UTCJ-SUSTENTABLE: Tus credenciales de acceso')
+                    ->view('emails.credenciales'); // Vista del correo
     }
 }

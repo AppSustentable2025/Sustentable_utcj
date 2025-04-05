@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Resend\Laravel\Facades\Resend; // Importa el facade de Resend
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EnviarCredencialesMail;
 use Illuminate\Http\Request;
@@ -55,32 +56,40 @@ class ControladorCombinadoController extends Controller
         ]);
     }
 
+
     private function registrarAlumnos(Request $request, $actividadId)
     {
         $alumnos = $request->alumnos;
-        $filePath = storage_path('app/alumnos_registrados.txt'); // Ruta del archivo
+        $filePath = storage_path('app/alumnos_registrados.txt');
 
         foreach ($alumnos as $alumnoData) {
-            $password = $this->generarPassword(); // Generar contraseña en texto plano
-            $hashedPassword = bcrypt($password); // Encriptar contraseña
+            $password = $this->generarPassword();
+            $hashedPassword = bcrypt($password);
 
             $alumno = Alumno::firstOrCreate(
                 ['matricula' => $alumnoData['matricula']],
                 ['nombre' => $alumnoData['nombre'], 'password' => $hashedPassword]
             );
 
-            // Relacionar alumno con la actividad
             ActividadAlumno::firstOrCreate([
                 'actividad_id' => $actividadId,
                 'alumno_id' => $alumno->id
             ]);
 
-            // Guardar los datos en el archivo de texto
+            // Guardar en archivo de texto
             $contenido = "Matrícula: {$alumnoData['matricula']}, Nombre: {$alumnoData['nombre']}, Contraseña: {$password}\n";
             file_put_contents($filePath, $contenido, FILE_APPEND);
 
-            // Enviar correo con la contraseña en texto plano
-            Mail::to($alumnoData['matricula'])->send(new EnviarCredencialesMail($alumnoData['matricula'], $password));
+            // Enviar correo con Resend
+            Resend::emails()->send([
+                'from' => 'notificaciones@utcjsustentable.site', // Usa tu dominio verificado
+                'to' => $alumnoData['matricula'], // Ajusta según el formato de correo de los alumnos
+                'subject' => 'Tus credenciales de acceso',
+                'html' => view('emails.credenciales', [
+                    'matricula' => $alumnoData['matricula'],
+                    'password' => $password
+                ])->render(),
+            ]);
         }
     }
 
