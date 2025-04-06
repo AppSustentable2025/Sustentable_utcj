@@ -28,40 +28,40 @@
             <table class="table datatable">
               <thead>
                 <tr>
-                  <th>Id</th>
+                  <th>#</th> <!-- Cambiado de "Id" a "#" -->
                   <th>Tarea</th>
                   <th>Foto 1</th>
                   <th>Foto 2</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach($alumno->tareas as $tarea)
-                  <tr>
-                    <td>{{ $tarea->id }}</td>
-                    <td>{{ $tarea->nombre }}</td>
+                @foreach($alumno->tareas as $index => $tarea) <!-- Agregado $index -->
+                <tr>
+                  <td>{{ $index + 1 }}</td> <!-- Mostrar número secuencial -->
+                  <td>{{ $tarea->nombre }}</td>
 
-                    <td>
-                      @if($tarea->pivot->imagen_1)
-                        @php
-                          $fileName = basename($tarea->pivot->imagen_1);
-                        @endphp
-                        <button class="btn btn-link p-0" onclick="mostrarImagen('{{ url('/ver-imagen/'.$fileName) }}')">Ver Foto 1</button>
-                      @else
-                        No disponible
-                      @endif
-                    </td>
+                  <td>
+                    @if($tarea->pivot->imagen_1)
+                    @php
+                    $fileName = basename($tarea->pivot->imagen_1);
+                    @endphp
+                    <button class="btn btn-link p-0" onclick="mostrarImagen('{{ url('/ver-imagen/'.$fileName) }}')">Ver Foto 1</button>
+                    @else
+                    No disponible
+                    @endif
+                  </td>
 
-                    <td>
-                      @if($tarea->pivot->imagen_2)
-                        @php
-                          $fileName = basename($tarea->pivot->imagen_2);
-                        @endphp
-                        <button class="btn btn-link p-0" onclick="mostrarImagen('{{ url('/ver-imagen/'.$fileName) }}')">Ver Foto 2</button>
-                      @else
-                        No disponible
-                      @endif
-                    </td>
-                  </tr>
+                  <td>
+                    @if($tarea->pivot->imagen_2)
+                    @php
+                    $fileName = basename($tarea->pivot->imagen_2);
+                    @endphp
+                    <button class="btn btn-link p-0" onclick="mostrarImagen('{{ url('/ver-imagen/'.$fileName) }}')">Ver Foto 2</button>
+                    @else
+                    No disponible
+                    @endif
+                  </td>
+                </tr>
                 @endforeach
               </tbody>
             </table>

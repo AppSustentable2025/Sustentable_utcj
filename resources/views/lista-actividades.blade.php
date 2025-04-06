@@ -114,14 +114,17 @@
             <table id="actividadTable" class="table">
               <thead>
                 <tr>
+                  <th scope="col">#</th>
                   <th scope="col">Id</th>
                   <th scope="col">Periodo</th>
                   <th scope="col">Horario</th>
+                  <!-- <th scope="col">Estado</th> -->
                 </tr>
               </thead>
               <tbody>
-                @foreach($actividades as $actividad)
+                @foreach($actividades as $index => $actividad)
                 <tr data-id="{{ $actividad->id }}" class="parent-row">
+                  <td>{{ $index + 1 }}</td>
                   <td><a href="javascript:void(0)"><strong>{{ $actividad->id }}</strong></a></td>
                   <td>{{ $actividad->Periodo }}</td>
                   <td>{{ $actividad->Horario }}</td>
