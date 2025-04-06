@@ -85,7 +85,7 @@
                           <label for="matriculaInput" class="form-label">Matrícula</label>
                           <input type="text" id="matriculaInput" name="matricula" class="form-control"
                             pattern="al[0-9]{8}@utcj\.edu\.mx" placeholder="Ej. al12345678@utcj.edu.mx" required>
-                          <div class="invalid-feedback">Formato incorrecto: al+6 números+@utcj.edu.mx</div>
+                          <div class="invalid-feedback">Formato incorrecto: al+8 números+@utcj.edu.mx</div>
                         </div>
 
                         <!-- Campo para Nombre -->
@@ -104,8 +104,6 @@
                   </div>
                 </div>
               </div>
-
-
               <div class="flex-grow-1"></div>
               <a href="{{ route('actividades.create') }}" class="btn btn-primary btn-sm px-4">Nueva actividad</a>
             </div>

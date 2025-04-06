@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>¡Bienvenido a Utcj Sustentable!</h1>
+    <p>Hola {{ $nombre }},</p>
     <p>Tu usuario y contraseña son:</p>
     <ul>
         <li><strong>Matrícula:</strong> {{ $matricula }}</li>
