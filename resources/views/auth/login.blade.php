@@ -59,6 +59,15 @@
                 </div>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
+
+                    @if($errors->any())
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                        @endforeach
+                    </div>
+                    @endif
+
                     <div class="input-group mb-3">
                         <input type="email" name="email" class="form-control" placeholder="Correo"
                             pattern="al[0-9]{8}@utcj\.edu\.mx"
@@ -75,7 +84,7 @@
                         <div class="col-8">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                                <label class="form-check-label" for="flexCheckDefault"> Recordarmee </label>
+                                <label class="form-check-label" for="flexCheckDefault"> Recordarme </label>
                             </div>
                         </div>
                         <!-- /.col -->
@@ -88,20 +97,6 @@
                     </div>
                     <!--end::Row-->
                 </form>
-                <!-- <div class="social-auth-links text-center mb-3 d-grid gap-2">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-primary">
-              <i class="bi bi-facebook me-2"></i> Sign in using Facebook
-            </a>
-            <a href="#" class="btn btn-danger">
-              <i class="bi bi-google me-2"></i> Sign in using Google+
-            </a>
-          </div> -->
-                <!-- /.social-auth-links -->
-                <!-- <p class="mb-1"><a href="forgot-password.html">I forgot my password</a></p>
-          <p class="mb-0">
-            <a href="register.html" class="text-center"> Register a new membership </a>
-          </p> -->
             </div>
             <!-- /.login-card-body -->
         </div>

@@ -2,7 +2,8 @@
 
   <div class="d-flex align-items-center justify-content-between">
     <a href="#" class="logo d-flex align-items-center">
-      <img src="assets/img/utcj.png" alt="">
+      <!-- <img src="assets/img/utcj.png" alt=""> -->
+      <img src="{{ asset('dist/img/utsustentable.jpg') }}" alt="Logo">
       <span class="d-none d-lg-block">UTCJ Sustentable</span>
     </a>
     <i class="bi bi-list toggle-sidebar-btn"></i>
