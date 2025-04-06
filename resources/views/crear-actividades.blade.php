@@ -14,7 +14,7 @@
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-        <li class="breadcrumb-item">Crear actividades</li>        
+        <li class="breadcrumb-item">Crear actividades</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -97,11 +97,11 @@
                 <tr>
                   <th scope="col" style="width: 10%;">#</th>
                   <th style="width: 60%;">Nombre</th>
-                  <th style="width: 10%;">Integrantes</th>
+                  <!-- <th style="width: 10%;">Integrantes</th> -->
                   <th scope="col" style="width: 20%;">Acción</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="tbodyTareas">
                 <!-- Las filas se agregarán dinámicamente aquí -->
               </tbody>
             </table>
@@ -198,6 +198,11 @@
         return false;
       }
 
+      if ($("#tbodyTareas tr").length === 0) {
+        alert("No hay tareas para asignar. Por favor cargue tareas primero.");
+        return false;
+      }
+
       // Transferir los campos del formulario oculto al formulario principal
       $("#alumnosForm input").clone().appendTo($(this));
 
@@ -238,7 +243,7 @@
         <tr id="tarea_${tareaId}">
           <th scope="row">${counter}</th>  <!-- Mostrar el contador como ID -->
           <td>${tareaNombre}</td>
-          <td>${tareaIntegrantes}</td> <!-- Mostrar integrantes -->
+          <!-- <td>${tareaIntegrantes}</td>  Mostrar integrantes -->
           <td>
             <button class="btn btn-danger btn-eliminar" data-id="${tareaId}">Eliminar</button>
           </td>

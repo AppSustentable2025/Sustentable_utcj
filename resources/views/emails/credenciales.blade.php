@@ -4,12 +4,12 @@
     <title>Credenciales de acceso</title>
 </head>
 <body>
-    <h1>¡Bienvenido!</h1>
+    <h1>¡Bienvenido a Utcj Sustentable!</h1>
     <p>Tu usuario y contraseña son:</p>
     <ul>
         <li><strong>Matrícula:</strong> {{ $matricula }}</li>
         <li><strong>Contraseña:</strong> {{ $password }}</li>
     </ul>
-    <p>Por seguridad, cambia tu contraseña al ingresar.</p>
+    <p>Por favor, ingresa en la App con estas credenciales para iniciar con las tareas asignadas.</p>
 </body>
 </html>

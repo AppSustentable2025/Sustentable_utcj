@@ -82,7 +82,7 @@ class ControladorCombinadoController extends Controller
 
             // Enviar correo con Resend
             Resend::emails()->send([
-                'from' => 'notificaciones@utcjsustentable.site', // Usa tu dominio verificado
+                'from' => 'UTCJ Sustentable <notificaciones@utcjsustentable.site>', // Usa tu dominio verificado
                 'to' => $alumnoData['matricula'], // Ajusta según el formato de correo de los alumnos
                 'subject' => 'Tus credenciales de acceso',
                 'html' => view('emails.credenciales', [
@@ -101,30 +101,33 @@ class ControladorCombinadoController extends Controller
 
 
     private function asignarTareas($actividadId)
-    {
-        $alumnos = Alumno::whereIn('id', function ($query) use ($actividadId) {
-            $query->select('alumno_id')->from('actividad_alumno')->where('actividad_id', $actividadId);
-        })->get();
+{
+    $alumnos = Alumno::whereIn('id', function ($query) use ($actividadId) {
+        $query->select('alumno_id')->from('actividad_alumno')->where('actividad_id', $actividadId);
+    })->get();
 
-        $tareas = Tarea::pluck('id')->toArray();
+    $tareas = Tarea::pluck('id'); // Esto devuelve una colección
 
-        if (empty($tareas)) {
-            throw new \Exception('No hay tareas disponibles para asignar.');
+    // Verificar que haya alumnos y tareas disponibles
+    if ($alumnos->isEmpty() || $tareas->isEmpty()) {
+        return redirect()->back()->with('error', 'No hay alumnos o tareas disponibles.');
+    }
+
+    $tareasArray = $tareas->toArray(); // Convertimos a array para el resto de la lógica
+
+    foreach ($alumnos as $alumno) {
+        // Si hay menos de 8 tareas, se repiten aleatoriamente hasta completar 8
+        $tareasAleatorias = collect($tareasArray)->shuffle()->take(8);
+        while ($tareasAleatorias->count() < 8) {
+            $tareasAleatorias = $tareasAleatorias->merge(collect($tareasArray)->shuffle()->take(8 - $tareasAleatorias->count()));
         }
 
-        foreach ($alumnos as $alumno) {
-            // Si hay menos de 8 tareas, se repiten aleatoriamente hasta completar 8
-            $tareasAleatorias = collect($tareas)->shuffle()->take(8);
-            while ($tareasAleatorias->count() < 8) {
-                $tareasAleatorias = $tareasAleatorias->merge(collect($tareas)->shuffle()->take(8 - $tareasAleatorias->count()));
-            }
-
-            foreach ($tareasAleatorias as $tareaId) {
-                AlumnoTarea::create([
-                    'alumno_id' => $alumno->id,
-                    'tarea_id' => $tareaId
-                ]);
-            }
+        foreach ($tareasAleatorias as $tareaId) {
+            AlumnoTarea::create([
+                'alumno_id' => $alumno->id,
+                'tarea_id' => $tareaId
+            ]);
         }
     }
+}
 }
