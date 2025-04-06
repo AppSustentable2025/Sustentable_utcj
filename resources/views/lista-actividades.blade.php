@@ -111,6 +111,7 @@
             </div>
 
             <!-- Table with stripped rows -->
+            <!-- Table with stripped rows -->
             <table id="actividadTable" class="table">
               <thead>
                 <tr>
@@ -118,7 +119,8 @@
                   <th scope="col">Id</th>
                   <th scope="col">Periodo</th>
                   <th scope="col">Horario</th>
-                  <!-- <th scope="col">Estado</th> -->
+                  <th scope="col"># Alumnos</th>
+                  <th scope="col">Estado</th> <!-- Nueva columna Estado -->
                 </tr>
               </thead>
               <tbody>
@@ -128,30 +130,68 @@
                   <td><a href="javascript:void(0)"><strong>{{ $actividad->id }}</strong></a></td>
                   <td>{{ $actividad->Periodo }}</td>
                   <td>{{ $actividad->Horario }}</td>
+                  <td>{{ $actividad->alumnos->count() }}</td>
+                  <td>
+                    @php
+                    $todosCompletados = true;
+                    foreach($actividad->alumnos as $alumno) {
+                    foreach($alumno->tareas as $tarea) {
+                    if(empty($tarea->pivot->imagen_1) || empty($tarea->pivot->imagen_2)) {
+                    $todosCompletados = false;
+                    break 2; // Sale de ambos bucles
+                    }
+                    }
+                    }
+                    @endphp
+                    @if($todosCompletados && $actividad->alumnos->count() > 0)
+                    <span class="badge text-bg-success">Completado</span>
+                    @else
+                    <span class="badge text-bg-warning">Pendiente</span>
+                    @endif
+                  </td>
                 </tr>
                 @endforeach
               </tbody>
             </table>
 
-            <!-- Hidden student tables -->
+            <!-- Hidden student tables (se mantiene igual) -->
             @foreach($actividades as $actividad)
             <div id="child-row-{{ $actividad->id }}" class="child-row mt-2 mb-4" style="display:none;">
               <table class="table table-bordered">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>ID Alumno</th>
                     <th>Nombre</th>
+                    <th>Estado</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($actividad->alumnos as $alumno)
+                  @foreach($actividad->alumnos as $index => $alumno)
                   <tr>
+                    <td>{{ $index + 1 }}</td>
                     <td>
                       <a href="javascript:void(0)" class="alumno-link" data-id="{{ $alumno->id }}">
                         <strong>{{ $alumno->id }}</strong>
                       </a>
                     </td>
                     <td>{{ $alumno->nombre }}</td>
+                    <td>
+                      @php
+                      $completado = true;
+                      foreach($alumno->tareas as $tarea) {
+                      if(empty($tarea->pivot->imagen_1) || empty($tarea->pivot->imagen_2)) {
+                      $completado = false;
+                      break;
+                      }
+                      }
+                      @endphp
+                      @if($completado && count($alumno->tareas) > 0)
+                      <span class="badge text-bg-success">Completado</span>
+                      @else
+                      <span class="badge text-bg-warning">Pendiente</span>
+                      @endif
+                    </td>
                   </tr>
                   @endforeach
                 </tbody>

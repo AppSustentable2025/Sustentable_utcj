@@ -28,16 +28,17 @@
             <table class="table datatable">
               <thead>
                 <tr>
-                  <th>#</th> <!-- Cambiado de "Id" a "#" -->
+                  <th>#</th>
                   <th>Tarea</th>
                   <th>Foto 1</th>
                   <th>Foto 2</th>
+                  <th>Estado</th> <!-- Nueva columna Estado -->
                 </tr>
               </thead>
               <tbody>
-                @foreach($alumno->tareas as $index => $tarea) <!-- Agregado $index -->
+                @foreach($alumno->tareas as $index => $tarea)
                 <tr>
-                  <td>{{ $index + 1 }}</td> <!-- Mostrar número secuencial -->
+                  <td>{{ $index + 1 }}</td>
                   <td>{{ $tarea->nombre }}</td>
 
                   <td>
@@ -59,6 +60,15 @@
                     <button class="btn btn-link p-0" onclick="mostrarImagen('{{ url('/ver-imagen/'.$fileName) }}')">Ver Foto 2</button>
                     @else
                     No disponible
+                    @endif
+                  </td>
+
+                  <!-- Nueva columna Estado -->
+                  <td>
+                    @if($tarea->pivot->imagen_1 && $tarea->pivot->imagen_2)
+                    <span class="badge text-bg-success">Completado</span>
+                    @else
+                    <span class="badge text-bg-warning">Pendiente</span>
                     @endif
                   </td>
                 </tr>
