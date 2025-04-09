@@ -23,7 +23,6 @@
             <div class="d-flex justify-content-between">
               <h5 class="card-title">{{ $alumno->nombre }}</h5>
             </div>
-
             <!-- Tabla -->
             <table class="table datatable">
               <thead>
